@@ -17,7 +17,7 @@ from pydantic import BaseModel
 
 from agents.consumer_pipeline import analyse_document, prescan_text
 from ocr.tesseract_ocr import extract_text_from_image
-from translation.google_translate import detect_language, translate_to_english
+from translation.google_translate import detect_language, translate_to_english, translate_json
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/consumer", tags=["consumer"])
@@ -115,7 +115,9 @@ async def analyse_photo(
         raise HTTPException(status_code=422, detail="No text could be extracted from the image.")
 
     english_text, detected_lang = await _normalise_to_english(extracted_text, preferred_language)
-    analysis = await analyse_document(english_text, language=preferred_language)
+    analysis = await analyse_document(english_text, language="en")
+    if preferred_language and preferred_language != "en":
+        analysis = await translate_json(analysis, preferred_language)
 
     return JSONResponse({
         "status": "success",
@@ -149,7 +151,9 @@ async def analyse_upload(
         raise HTTPException(status_code=422, detail="No text could be extracted from the document.")
 
     english_text, detected_lang = await _normalise_to_english(extracted_text, preferred_language)
-    analysis = await analyse_document(english_text, language=preferred_language)
+    analysis = await analyse_document(english_text, language="en")
+    if preferred_language and preferred_language != "en":
+        analysis = await translate_json(analysis, preferred_language)
 
     return JSONResponse({
         "status": "success",
@@ -173,7 +177,9 @@ async def analyse_text(req: AnalyseTextRequest):
         raise HTTPException(status_code=400, detail="Text too short to analyse.")
 
     english_text, detected_lang = await _normalise_to_english(req.text, req.preferred_language)
-    analysis = await analyse_document(english_text, language=req.preferred_language)
+    analysis = await analyse_document(english_text, language="en")
+    if req.preferred_language and req.preferred_language != "en":
+        analysis = await translate_json(analysis, req.preferred_language)
 
     return JSONResponse({
         "status": "success",

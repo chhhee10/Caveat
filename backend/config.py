@@ -54,14 +54,13 @@ MODELS = {
     "consumer_scorer":   "llama-3.1-8b-instant",                       # Call 3: fast + high RPD
 
     # RAG Q&A
-    "rag_chat":   "qwen-qwq-32b",                               # strong multilingual
+    "rag_chat":   "llama-3.3-70b-versatile",                    # best reasoning
 }
 
 # Fallback chain per model if rate limited
 MODEL_FALLBACK = {
     "meta-llama/llama-4-scout-17b-16e-instruct": "llama-3.1-8b-instant",
-    "llama-3.3-70b-versatile":                   "qwen-qwq-32b",
-    "qwen-qwq-32b":                              "llama-3.3-70b-versatile",
+    "llama-3.3-70b-versatile":                   "llama-3.1-8b-instant",
     "llama-3.1-8b-instant":                      "llama-3.1-8b-instant",
     "compound-beta":                             "llama-3.3-70b-versatile",
 }

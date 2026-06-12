@@ -139,6 +139,7 @@ p  { color: var(--text-2); }
 .input::placeholder { color: var(--text-3); }
 
 select.input { appearance: none; cursor: pointer; }
+select.input option { background: var(--bg-1); color: var(--text); }
 textarea.input { resize: vertical; min-height: 120px; }
 
 /* ── Labels ── */
