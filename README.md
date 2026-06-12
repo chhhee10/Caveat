@@ -116,6 +116,9 @@ Caveat is intentionally built as three surfaces over one shared intelligence cor
 
 ### 3.1 Consumer
 
+![Consumer Interface](https://raw.githubusercontent.com/Vijeta-Patel/Caveat/main/frontend/ss/consumer.png)
+*Consumer tool showing risk analysis and recommendations*
+
 The consumer flow is for people who do not have a lawyer on standby. It accepts messy real-world inputs and turns them into actionable explanation.
 
 What it does:
@@ -137,6 +140,9 @@ Why it matters:
 Consumer legal tools often produce summaries, but summaries are not enough. A summary can miss the exploit. Caveat uses an adversarial second pass that asks: "How could the stronger party use this clause against the signer?"
 
 ### 3.2 Enterprise
+
+![Enterprise Dashboard](https://raw.githubusercontent.com/Vijeta-Patel/Caveat/main/frontend/ss/enterprise.png)
+*Enterprise compliance dashboard with clause analysis and redlines*
 
 The enterprise flow is for teams reviewing vendor agreements, SaaS contracts, DPAs, payment contracts, procurement documents, and recurring templates.
 
@@ -163,6 +169,12 @@ Enterprise compliance is not a single LLM prompt. It needs reproducible state, t
 
 ### 3.3 Extension
 
+![Browser Extension Badge](https://raw.githubusercontent.com/Vijeta-Patel/Caveat/main/frontend/ss/extension-1.png)
+*Extension badge color-coded risk indicators on legal pages*
+
+![Extension Deep Analysis](https://raw.githubusercontent.com/Vijeta-Patel/Caveat/main/frontend/ss/extension-2.png)
+*Extension popup showing detailed risk analysis and recommendations*
+
 The extension is for the consent moment itself. It is a Chrome Manifest V3 extension that runs on agreement-like pages and calls the same backend intelligence layer.
 
 What it does:
@@ -187,6 +199,9 @@ The best time to explain a Terms of Service risk is before the user clicks agree
 ---
 
 ## 4. System Architecture
+
+![System Architecture Diagram](https://raw.githubusercontent.com/Vijeta-Patel/Caveat/main/frontend/ss/architecture.png)
+*Complete system architecture showing all interconnected components*
 
 ```text
                                +----------------------------+
@@ -759,6 +774,12 @@ Responsibilities:
 Why it exists:
 
 Hackathon demos often stop at "the model returned text." Caveat closes the loop into actual team workflows: PR review, Slack notification, frontend completion, and durable audit.
+
+![GitHub PR Integration](https://raw.githubusercontent.com/Vijeta-Patel/Caveat/main/frontend/ss/pullreq.png)
+*Automated GitHub PR with redlined clauses and compliance recommendations*
+
+![Slack Notifications](https://raw.githubusercontent.com/Vijeta-Patel/Caveat/main/frontend/ss/slack.png)
+*Real-time Slack alerts for compliance team on contract analysis completion*
 
 ---
 
