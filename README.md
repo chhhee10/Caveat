@@ -2,7 +2,7 @@
 
 # Caveat
 
-## AI contract intelligence for consumers, enterprises, and the browser
+**AI contract intelligence for consumers, enterprises, and the browser**
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-async_API-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
@@ -25,27 +25,28 @@ Caveat is a hackathon-built legal intelligence platform that reviews contracts t
 
 ## Table of Contents
 
-- [Why We Need Caveat](#why-we-need-caveat)
-- [Problems Solved](#problems-solved)
-- [Three Product Surfaces](#three-product-surfaces)
-- [System Architecture](#system-architecture)
-- [Consumer Pipeline](#consumer-pipeline)
-- [Enterprise Pipeline](#enterprise-pipeline)
-- [Browser Extension Pipeline](#browser-extension-pipeline)
-- [The Seven Agents](#the-seven-agents)
-- [Memory Layer](#memory-layer)
-- [Regulation Corpus and Persistence](#regulation-corpus-and-persistence)
-- [Data Flow](#data-flow)
-- [Tech Stack and Why](#tech-stack-and-why)
-- [API Surface](#api-surface)
-- [Repository Structure](#repository-structure)
-- [Setup](#setup)
-- [Hackathon Judging Notes](#hackathon-judging-notes)
-- [Safety and Scope](#safety-and-scope)
+1. [Why We Need Caveat](#1-why-we-need-caveat)
+2. [Problems Solved](#2-problems-solved)
+3. [Three Product Surfaces](#3-three-product-surfaces)
+4. [System Architecture](#4-system-architecture)
+5. [Consumer Pipeline](#5-consumer-pipeline)
+6. [Enterprise Pipeline](#6-enterprise-pipeline)
+7. [Browser Extension Pipeline](#7-browser-extension-pipeline)
+8. [The Seven Agents](#8-the-seven-agents)
+9. [Memory Layer](#9-memory-layer)
+10. [Regulation Corpus and Persistence](#10-regulation-corpus-and-persistence)
+11. [Data Flow](#11-data-flow)
+12. [Tech Stack and Why](#12-tech-stack-and-why)
+13. [API Surface](#13-api-surface)
+14. [Repository Structure](#14-repository-structure)
+15. [Setup](#15-setup)
+16. [Hackathon Judging Notes](#16-hackathon-judging-notes)
+17. [Safety and Scope](#17-safety-and-scope)
+18. [One-Line Summary](#18-one-line-summary)
 
 ---
 
-## Why We Need Caveat
+## 1. Why We Need Caveat
 
 Contracts have become everyday infrastructure. People accept loan letters, rental agreements, employment offers, app terms, payment mandates, data-sharing policies, SaaS agreements, vendor contracts, and privacy notices constantly. The problem is not only that these documents are long. The real problem is that they are written to be unreadable at the exact moment a user or business must make a decision.
 
@@ -57,9 +58,9 @@ Caveat exists because contract review should not be reserved for people with leg
 
 ---
 
-## Problems Solved
+## 2. Problems Solved
 
-### 1. Legal language is unreadable for normal users
+### 2.1 Legal language is unreadable for normal users
 
 Most people do not need a legal lecture. They need to know:
 
@@ -71,7 +72,7 @@ Most people do not need a legal lecture. They need to know:
 
 Caveat converts contract language into eighth-grade plain English, estimates real-world consequences, explains financial exposure, and gives negotiation guidance.
 
-### 2. Indian users often receive contracts as physical paper or phone photos
+### 2.2 Indian users often receive contracts as physical paper or phone photos
 
 Many important documents in India still arrive as printed paper, WhatsApp images, scanned PDFs, or informal DOCX files. A tool that only handles clean digital text misses the real workflow. Caveat supports:
 
@@ -80,11 +81,11 @@ Many important documents in India still arrive as printed paper, WhatsApp images
 - Raw text from web pages and the browser extension.
 - Translation flow for Indian language users through detection and translation helpers.
 
-### 3. Terms of Service risk is invisible at click time
+### 2.3 Terms of Service risk is invisible at click time
 
 Users encounter risk inside a browser, often behind an "Accept" button. They will not copy the whole page into a separate tool unless the tool appears exactly where the risk appears. The Caveat Chrome extension passively scans legal pages, updates the badge, and lets users request full analysis in-place.
 
-### 4. Enterprise contract review is slow and hard to audit
+### 2.4 Enterprise contract review is slow and hard to audit
 
 Manual legal review can take days. Business teams move faster than compliance teams, and the review trail often disappears into comments, email threads, or local documents. Caveat creates a structured, repeatable pipeline:
 
@@ -97,13 +98,13 @@ Manual legal review can take days. Business teams move faster than compliance te
 - Slack alert.
 - SQLite audit trail.
 
-### 5. Existing tools usually review one document at a time
+### 2.5 Existing tools usually review one document at a time
 
 One-document review misses the hardest enterprise problem: contradictions and repeated risk patterns across many contracts. Caveat embeds clauses into ChromaDB so a new contract can be compared against past contracts in the same project and across the organization.
 
 ---
 
-## Three Product Surfaces
+## 3. Three Product Surfaces
 
 Caveat is intentionally built as three surfaces over one shared intelligence core.
 
@@ -113,7 +114,7 @@ Caveat is intentionally built as three surfaces over one shared intelligence cor
 | Enterprise | Legal, procurement, compliance, security teams | Classify regulatory risk, detect contradictions, redline, audit | 7-agent LangGraph pipeline |
 | Extension | Anyone browsing agreement pages | Detect risk at the moment of consent | MV3 prescan + deep consumer analysis |
 
-### Consumer
+### 3.1 Consumer
 
 The consumer flow is for people who do not have a lawyer on standby. It accepts messy real-world inputs and turns them into actionable explanation.
 
@@ -135,7 +136,7 @@ Why it matters:
 
 Consumer legal tools often produce summaries, but summaries are not enough. A summary can miss the exploit. Caveat uses an adversarial second pass that asks: "How could the stronger party use this clause against the signer?"
 
-### Enterprise
+### 3.2 Enterprise
 
 The enterprise flow is for teams reviewing vendor agreements, SaaS contracts, DPAs, payment contracts, procurement documents, and recurring templates.
 
@@ -160,7 +161,7 @@ Why it matters:
 
 Enterprise compliance is not a single LLM prompt. It needs reproducible state, traceable outputs, memory, document history, regulator-facing evidence, and workflow integration. Caveat is built around those requirements.
 
-### Extension
+### 3.3 Extension
 
 The extension is for the consent moment itself. It is a Chrome Manifest V3 extension that runs on agreement-like pages and calls the same backend intelligence layer.
 
@@ -185,7 +186,7 @@ The best time to explain a Terms of Service risk is before the user clicks agree
 
 ---
 
-## System Architecture
+## 4. System Architecture
 
 ```text
                                +----------------------------+
@@ -231,7 +232,7 @@ The backend is the core. All three surfaces call the same FastAPI service. The f
 
 ---
 
-## Consumer Pipeline
+## 5. Consumer Pipeline
 
 The consumer pipeline is implemented in `backend/agents/consumer_pipeline.py`. It is deliberately split into three LLM calls instead of one giant prompt because consumer legal analysis needs three different reasoning modes:
 
@@ -239,7 +240,7 @@ The consumer pipeline is implemented in `backend/agents/consumer_pipeline.py`. I
 2. Adversarial risk discovery.
 3. Consequence explanation and final scoring.
 
-### Inputs
+### 5.1 Inputs
 
 The consumer router supports three main input paths:
 
@@ -249,7 +250,7 @@ The consumer router supports three main input paths:
 | `POST /api/consumer/upload` | PDF or DOCX | pdfplumber or python-docx |
 | `POST /api/consumer/analyse` | Raw text | Direct text analysis |
 
-### Pre-processing flow
+### 5.2 Pre-processing flow
 
 ```text
 User input
@@ -275,7 +276,7 @@ User input
                                       optional output translation
 ```
 
-### Call 1: Parser + Classifier
+### 5.3 Call 1: Parser + Classifier
 
 Model: `meta-llama/llama-4-scout-17b-16e-instruct`
 
@@ -309,7 +310,7 @@ Output shape:
 ]
 ```
 
-### Call 2: Adversary + Benchmark
+### 5.4 Call 2: Adversary + Benchmark
 
 Model: `llama-3.3-70b-versatile`
 
@@ -352,7 +353,7 @@ Output shape:
 ]
 ```
 
-### Call 3: Consequence Simulator + Scorer + Explainer
+### 5.5 Call 3: Consequence Simulator + Scorer + Explainer
 
 Model: `llama-3.1-8b-instant`
 
@@ -405,7 +406,7 @@ Final output shape:
 }
 ```
 
-### Consumer prescan
+### 5.6 Consumer prescan
 
 The extension uses a faster lightweight path:
 
@@ -428,11 +429,11 @@ Goal: return in roughly extension-friendly time and drive badge color.
 
 ---
 
-## Enterprise Pipeline
+## 6. Enterprise Pipeline
 
 The enterprise pipeline is implemented in `backend/agents/pipeline.py` and runs as a LangGraph state machine. The router returns immediately with `202 Accepted`, then the pipeline runs in a background task while the frontend subscribes to `/api/stream/{job_id}` for progress.
 
-### Enterprise entrypoint
+### 6.1 Enterprise entrypoint
 
 Endpoint: `POST /api/enterprise/upload`
 
@@ -452,7 +453,7 @@ Response:
 }
 ```
 
-### Pipeline state
+### 6.2 Pipeline state
 
 Every agent receives and returns a shared state dictionary:
 
@@ -476,7 +477,7 @@ Every agent receives and returns a shared state dictionary:
 }
 ```
 
-### Enterprise flow
+### 6.3 Enterprise flow
 
 ```text
 PDF/DOCX upload
@@ -506,7 +507,7 @@ Agent 6: Reporter
 GitHub PR + Slack + SQLite audit + SSE completion
 ```
 
-### SSE progress events
+### 6.4 SSE progress events
 
 The frontend listens to a job-specific SSE stream. Events include:
 
@@ -523,11 +524,11 @@ This matters for judging because the enterprise pipeline is not a black-box spin
 
 ---
 
-## Browser Extension Pipeline
+## 7. Browser Extension Pipeline
 
 The extension lives in `extension/` and uses Chrome Manifest V3.
 
-### Files
+### 7.1 Files
 
 | File | Role |
 |---|---|
@@ -537,7 +538,7 @@ The extension lives in `extension/` and uses Chrome Manifest V3.
 | `sidebar/sidebar.html` | Popup UI shell |
 | `sidebar/sidebar.js` | Prescan display, language picker, deep analysis, result rendering |
 
-### Extension data flow
+### 7.2 Extension data flow
 
 ```text
 Page loaded
@@ -576,7 +577,7 @@ POST /api/consumer/analyse
 popup renders full consumer report
 ```
 
-### Badge semantics
+### 7.3 Badge semantics
 
 | Badge | Color | Meaning |
 |---|---|---|
@@ -586,7 +587,7 @@ popup renders full consumer report
 | Checkmark | Green | No major red flags in quick scan |
 | Empty | Gray | No legal content detected or backend unavailable |
 
-### Extension privacy model
+### 7.4 Extension privacy model
 
 - The extension only sends extracted legal text to the local/backend API.
 - It does not log browsing history.
@@ -595,11 +596,11 @@ popup renders full consumer report
 
 ---
 
-## The Seven Agents
+## 8. The Seven Agents
 
 Caveat's enterprise system is judge-relevant because the backend is not a single prompt hidden behind an upload button. It is a typed, multi-stage agent pipeline with explicit responsibilities and durable state.
 
-### Agent 1: Ingestor
+### 8.1 Agent 1: Ingestor
 
 File: `backend/agents/agent_ingestor.py`
 
@@ -616,7 +617,7 @@ Why it exists:
 
 Compliance outputs must be auditable. A risk report without a stable file hash can be challenged because there is no proof of what exact document was reviewed.
 
-### Agent 2A: Extractor
+### 8.2 Agent 2A: Extractor
 
 File: `backend/agents/agent_extractor.py`
 
@@ -644,7 +645,7 @@ Why it exists:
 
 Every downstream step needs clause-level granularity. Classification, memory retrieval, contradiction detection, redlining, and audit output all depend on stable clause IDs.
 
-### Agent 2B: Regulation Loader
+### 8.3 Agent 2B: Regulation Loader
 
 File: `backend/agents/agent_reg_loader.py`
 
@@ -663,7 +664,7 @@ Why it exists:
 
 Regulation-aware classification needs structured reference material. Local corpora keep the demo reliable; live enrichment shows the intended path for changing regulations and enforcement updates.
 
-### Agent 2C: Memory Scanner
+### 8.4 Agent 2C: Memory Scanner
 
 File: `backend/agents/agent_memory.py`
 
@@ -687,7 +688,7 @@ This is one of the most important technical pieces. Many legal risks only appear
 
 The memory scanner makes Caveat cumulative. The system gets more useful as more contracts are reviewed.
 
-### Agent 3: Classifier
+### 8.5 Agent 3: Classifier
 
 File: `backend/agents/agent_classifier.py`
 
@@ -724,7 +725,7 @@ Reflection loop:
 
 If the first result has low confidence, the same clause is reviewed again with a reflection prompt. This adds latency only where uncertainty is high instead of slowing every clause.
 
-### Agent 5: Redliner
+### 8.6 Agent 5: Redliner
 
 File: `backend/agents/agent_redliner.py`
 
@@ -741,7 +742,7 @@ Why it exists:
 
 Classification tells a team what is wrong. Redlining tells them what to do next. The output can be used directly in a contract review workflow or GitHub PR.
 
-### Agent 6: Reporter
+### 8.7 Agent 6: Reporter
 
 File: `backend/agents/agent_reporter.py`
 
@@ -761,7 +762,7 @@ Hackathon demos often stop at "the model returned text." Caveat closes the loop 
 
 ---
 
-## Memory Layer
+## 9. Memory Layer
 
 The memory layer is implemented in `backend/memory/`.
 
@@ -771,7 +772,7 @@ The memory layer is implemented in `backend/memory/`.
 | `embedder.py` | Ollama `nomic-embed-text` wrapper |
 | `rag.py` | Retrieval-augmented Q&A over project documents |
 
-### Collection design
+### 9.1 Collection design
 
 Caveat uses two collection scopes:
 
@@ -792,7 +793,7 @@ Organization collection:
 - Used for historical similarity and repeated risk patterns.
 - Example: a risky arbitration clause that appears in employment, vendor, and procurement agreements.
 
-### Memory write path
+### 9.2 Memory write path
 
 ```text
 Clause manifest
@@ -826,7 +827,7 @@ Each clause stores metadata:
 }
 ```
 
-### Contradiction detection path
+### 9.3 Contradiction detection path
 
 ```text
 New clause embedding
@@ -857,7 +858,7 @@ Contradiction result:
 }
 ```
 
-### Historical flag path
+### 9.4 Historical flag path
 
 ```text
 New clause embedding
@@ -889,7 +890,7 @@ Historical flag result:
 }
 ```
 
-### RAG Q&A
+### 9.5 RAG Q&A
 
 Endpoint: `POST /api/enterprise/chat`
 
@@ -941,11 +942,11 @@ Example response shape:
 
 ---
 
-## Regulation Corpus and Persistence
+## 10. Regulation Corpus and Persistence
 
 Caveat uses a local-first regulation corpus so the enterprise demo remains reliable even without web access. Live regulatory enrichment is attempted, but the classifier always has a deterministic baseline from JSON files in `backend/regulations/`.
 
-### Regulations covered
+### 10.1 Regulations covered
 
 | Corpus | Jurisdiction | Coverage in the project | Example risks detected |
 |---|---|---|---|
@@ -953,11 +954,11 @@ Caveat uses a local-first regulation corpus so the enterprise demo remains relia
 | `GDPR` | European Union | GDPR articles for lawful basis, transparency, erasure, portability, processor contracts, security, breach notification, international transfers, liability/fines | No lawful basis, no retention period, invalid consent, non-adequate transfers, missing data subject rights |
 | `RBI` | India | RBI payment/data-localisation and payment-system guidance for localisation, card data storage, payment aggregators, recurring payments, digital lending, outsourcing, cybersecurity, customer rights | Payment data outside India, card credential storage, auto-debit without notice, missing RBI audit rights, forced arbitration for banking disputes |
 
-### Why local JSON plus live enrichment
+### 10.2 Why local JSON plus live enrichment
 
 Local JSON is used because hackathon demos must be deterministic. If web search fails, the pipeline still classifies clauses. Live enrichment exists because regulation is not static: enforcement actions, interpretation guidance, and penalty focus change over time. The implementation treats live search as additive, not required.
 
-### SQLite persistence model
+### 10.3 SQLite persistence model
 
 SQLite is used as the hackathon database because it has no operational overhead and still gives the pipeline a real audit surface. The schema is intentionally simple:
 
@@ -976,9 +977,9 @@ Why this matters:
 
 ---
 
-## Data Flow
+## 11. Data Flow
 
-### Full enterprise data flow
+### 11.1 Full enterprise data flow
 
 ```text
 1. User uploads PDF/DOCX in enterprise dashboard
@@ -998,7 +999,7 @@ Why this matters:
 15. User sees counts, report status, PR link, Slack status, audit metadata
 ```
 
-### Full consumer data flow
+### 11.2 Full consumer data flow
 
 ```text
 1. User uploads photo/PDF/DOCX or submits text
@@ -1012,7 +1013,7 @@ Why this matters:
 9. Frontend/extension renders the report
 ```
 
-### Full extension data flow
+### 11.3 Full extension data flow
 
 ```text
 1. User lands on a legal/contract-like page
@@ -1028,9 +1029,9 @@ Why this matters:
 
 ---
 
-## Tech Stack and Why
+## 12. Tech Stack and Why
 
-### Backend
+### 12.1 Backend
 
 | Component | Technology | Why this choice |
 |---|---|---|
@@ -1049,7 +1050,7 @@ Why this matters:
 | GitHub output | PyGithub | Turns analysis into a reviewable PR artifact |
 | Slack output | Incoming webhooks | Fastest way to integrate with team compliance workflow |
 
-### Frontend
+### 12.2 Frontend
 
 | Component | Technology | Why this choice |
 |---|---|---|
@@ -1061,7 +1062,7 @@ Why this matters:
 | Styling | CSS / Tailwind-compatible setup | Fast iteration with a distinctive hackathon visual identity |
 | Real-time client | EventSource | Direct SSE subscription to backend job streams |
 
-### Browser extension
+### 12.3 Browser extension
 
 | Component | Technology | Why this choice |
 |---|---|---|
@@ -1071,7 +1072,7 @@ Why this matters:
 | Storage | `chrome.storage.session` | Per-tab temporary prescan cache with automatic cleanup |
 | Deep extraction | `chrome.scripting.executeScript` | Lets popup request full page text only when user chooses deep analysis |
 
-### LLM model routing
+### 12.4 LLM model routing
 
 | Use case | Model | Reason |
 |---|---|---|
@@ -1086,7 +1087,7 @@ Why this matters:
 | Consumer scorer | `llama-3.1-8b-instant` | Fast final report and prescan |
 | RAG chat | `llama-3.3-70b-versatile` | Strong grounded answer generation |
 
-### Why these choices for a hackathon
+### 12.5 Why these choices for a hackathon
 
 The stack is optimized around four constraints:
 
@@ -1097,9 +1098,9 @@ The stack is optimized around four constraints:
 
 ---
 
-## API Surface
+## 13. API Surface
 
-### Health
+### 13.1 Health
 
 ```http
 GET /health
@@ -1107,7 +1108,7 @@ GET /health
 
 Returns API status and Groq token pool availability.
 
-### Consumer
+### 13.2 Consumer
 
 ```http
 POST /api/consumer/photo
@@ -1116,7 +1117,7 @@ POST /api/consumer/analyse
 POST /api/consumer/prescan
 ```
 
-### Enterprise
+### 13.3 Enterprise
 
 ```http
 POST /api/enterprise/upload
@@ -1126,13 +1127,13 @@ GET  /api/enterprise/projects/{org_id}
 GET  /api/enterprise/projects/{org_id}/{project_id}/documents
 ```
 
-### Streaming
+### 13.4 Streaming
 
 ```http
 GET /api/stream/{job_id}
 ```
 
-### Backend docs
+### 13.5 Backend docs
 
 Once the backend is running:
 
@@ -1143,7 +1144,7 @@ http://localhost:8000/redoc
 
 ---
 
-## Repository Structure
+## 14. Repository Structure
 
 ```text
 .
@@ -1214,9 +1215,9 @@ http://localhost:8000/redoc
 
 ---
 
-## Setup
+## 15. Setup
 
-### Prerequisites
+### 15.1 Prerequisites
 
 - Python 3.11+
 - Node.js 20+
@@ -1227,7 +1228,7 @@ http://localhost:8000/redoc
 - Optional for outputs: GitHub token and Slack webhook
 - Optional for translation: Google Translate API key
 
-### 1. System dependencies
+### 15.2 System dependencies
 
 Ubuntu/Debian:
 
@@ -1250,7 +1251,7 @@ macOS:
 brew install tesseract tesseract-lang
 ```
 
-### 2. Optional memory setup
+### 15.3 Optional memory setup
 
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
@@ -1263,7 +1264,7 @@ Ollama must be available at:
 http://localhost:11434
 ```
 
-### 3. Backend setup
+### 15.4 Backend setup
 
 ```bash
 cd backend
@@ -1313,7 +1314,7 @@ Docs:
 http://localhost:8000/docs
 ```
 
-### 4. Frontend setup
+### 15.5 Frontend setup
 
 ```bash
 cd frontend
@@ -1329,7 +1330,7 @@ http://localhost:3000
 
 The backend also mounts the `frontend/` directory statically when available, so static HTML surfaces such as `consumer.html`, `enterprise.html`, and `chat.html` can be served from the backend during the hackathon demo.
 
-### 5. Extension setup
+### 15.6 Extension setup
 
 1. Start the backend at `http://localhost:8000`.
 2. Open Chrome.
@@ -1350,9 +1351,9 @@ in `extension/background.js`.
 
 ---
 
-## Hackathon Judging Notes
+## 16. Hackathon Judging Notes
 
-### What is technically novel here
+### 16.1 What is technically novel here
 
 Caveat is not only a summarizer. The project combines:
 
@@ -1371,7 +1372,7 @@ Caveat is not only a summarizer. The project combines:
 - SQLite audit trail with file hash and risk-score persistence.
 - Groq token-pool routing for rate-limit resilience during a live demo.
 
-### Why the architecture is defensible
+### 16.2 Why the architecture is defensible
 
 Each component maps to a real requirement:
 
@@ -1386,7 +1387,7 @@ Each component maps to a real requirement:
 - GitHub PR: legal review often needs reviewable diffs and artifacts.
 - Slack: teams need alerts where they already work.
 
-### Demo path
+### 16.3 Demo path
 
 Recommended judging demo:
 
@@ -1399,7 +1400,7 @@ Recommended judging demo:
 7. Ask the RAG chat a project-level question.
 8. Load the Chrome extension on a legal page and show badge prescan plus deep analysis.
 
-### Current implementation boundaries
+### 16.4 Current implementation boundaries
 
 - The memory layer requires Ollama to be running locally. If Ollama is unavailable, the enterprise pipeline skips memory gracefully and still classifies/redlines.
 - GitHub PR and Slack output require credentials. If not configured, the core analysis still runs.
@@ -1408,7 +1409,7 @@ Recommended judging demo:
 
 ---
 
-## Safety and Scope
+## 17. Safety and Scope
 
 Caveat does not provide legal advice. It provides structured legal awareness, risk detection, plain-language explanation, compliance triage, and draft redlines for review. High-stakes matters should still be reviewed by a qualified lawyer.
 
@@ -1421,6 +1422,6 @@ The intended value is decision support:
 
 ---
 
-## One-Line Summary
+## 18. One-Line Summary
 
 Caveat turns unreadable legal documents into structured, explainable, memory-backed risk intelligence across consumer upload, enterprise compliance, and browser consent workflows.
