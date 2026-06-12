@@ -95,8 +95,8 @@ function ClauseCard({ clause }: { clause: JobResult["clauses"][0] }) {
 
 function UploadZone({ onJobStart }: { onJobStart: (id: string) => void }) {
   const [files, setFiles] = useState<File[]>([]);
-  const [orgId, setOrgId] = useState("acme-corp");
-  const [projectId, setProjectId] = useState("vendor-q3");
+  const [orgId, setOrgId] = useState("");
+  const [projectId, setProjectId] = useState("");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -114,6 +114,10 @@ function UploadZone({ onJobStart }: { onJobStart: (id: string) => void }) {
 
   async function submit() {
     if (!files.length) return;
+    if (!orgId.trim() || !projectId.trim()) {
+      setError("Org ID and Project ID are required.");
+      return;
+    }
     setUploading(true); setError(null);
     try {
       const r = await uploadEnterprise(files[0], orgId, projectId);
@@ -435,12 +439,18 @@ export default function EnterprisePage() {
 
   const phase = !currentJobId ? "upload" : isProcessing ? "monitor" : "result";
 
-  // Chat State
+  // Chat State — auto-sync from completed job so no hardcoded defaults
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [chatOrgId, setChatOrgId] = useState("acme-corp");
-  const [chatProjectId, setChatProjectId] = useState("vendor-q3");
+  const [chatOrgId, setChatOrgId] = useState(jobResult?.org_id ?? "");
+  const [chatProjectId, setChatProjectId] = useState(jobResult?.project_id ?? "");
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  // Keep chat org/project in sync when a new job completes
+  useEffect(() => {
+    if (jobResult?.org_id)    setChatOrgId(jobResult.org_id);
+    if (jobResult?.project_id) setChatProjectId(jobResult.project_id);
+  }, [jobResult]);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [chatHistory, loading]);
 

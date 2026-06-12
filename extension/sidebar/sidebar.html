@@ -1,211 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LexGuard</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>LexGuard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0d0010;
+  --bg1:    #180020;
+  --bg2:    #220030;
+  --acc:    #e894ff;
+  --acc-bg: rgba(232,148,255,0.12);
+  --bdr:    rgba(232,148,255,0.22);
+  --bdr1:   rgba(232,148,255,0.4);
+  --txt:    #ffffff;
+  --txt2:   #d4b8e0;
+  --txt3:   #8a6a9a;
+  --red:    #ff5555; --orange:#ff8c42; --yellow:#ffc542; --blue:#42b4ff; --green:#42ffa1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  width:400px;min-height:200px;max-height:600px;
+  overflow-y:auto;overflow-x:hidden;
+  font-family:'Inter',sans-serif;
+  background:var(--bg);color:var(--txt);
+  font-size:13px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--bg1)}
+::-webkit-scrollbar-thumb{background:var(--bdr1)}
 
-    :root {
-      --bg:       #07080C;
-      --bg-1:     #0D0F18;
-      --bg-2:     #12141F;
-      --border:   rgba(255,255,255,0.08);
-      --border-1: rgba(255,255,255,0.13);
-      --primary:  #6366F1;
-      --cyan:     #22D3EE;
-      --violation:#EF4444;
-      --high:     #F97316;
-      --medium:   #EAB308;
-      --low:      #22C55E;
-      --compliant:#10B981;
-      --text:     #F1F5F9;
-      --text-2:   #94A3B8;
-      --text-3:   #475569;
-    }
+/* HEADER */
+.hdr{
+  padding:11px 14px;display:flex;align-items:center;gap:10px;
+  border-bottom:2px solid var(--bdr1);background:var(--bg1);
+  position:sticky;top:0;z-index:20;
+}
+.logo{font-size:13px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#fff;display:flex;align-items:center;gap:7px}
+.logo em{background:var(--acc);color:var(--bg);font-style:normal;font-size:8px;font-weight:900;padding:2px 5px;letter-spacing:.08em}
+.hdr-url{flex:1;font-size:10px;color:var(--txt3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.hdr-btn{background:none;border:none;cursor:pointer;color:var(--txt3);font-size:15px;padding:3px;transition:color .15s}
+.hdr-btn:hover{color:var(--acc)}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      width: 400px; min-height: 200px; max-height: 600px;
-      overflow-y: auto; overflow-x: hidden;
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg); color: var(--text);
-      font-size: 13px; line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-    }
+/* STATES */
+/* ── No Legal ── */
+.no-legal{padding:36px 20px;text-align:center}
+.no-legal-icon{font-size:2.8rem;margin-bottom:14px;display:block}
+.no-legal-title{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#fff;margin-bottom:8px}
+.no-legal-sub{font-size:11px;color:var(--txt2);line-height:1.6;margin-bottom:20px}
 
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--bg-1); }
-    ::-webkit-scrollbar-thumb { background: var(--border-1); border-radius: 4px; }
+/* ── Risk Banner ── */
+.risk-banner{
+  margin:12px;padding:14px;
+  border-left:4px solid var(--acc);border:2px solid var(--bdr1);border-left-width:4px;
+  display:flex;align-items:center;gap:12px;
+}
+.risk-banner.high   {border-color:var(--red);background:rgba(255,85,85,.08);border-left-color:var(--red)}
+.risk-banner.medium {border-color:var(--orange);background:rgba(255,140,66,.08);border-left-color:var(--orange)}
+.risk-banner.safe   {border-color:var(--green);background:rgba(66,255,161,.08);border-left-color:var(--green)}
+.risk-banner.neutral{border-color:var(--bdr1);background:var(--bg1);border-left-color:var(--acc)}
+.risk-icon{font-size:1.8rem;flex-shrink:0}
+.risk-title{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:#fff}
+.risk-sub{font-size:10px;color:var(--txt2);margin-top:3px;font-weight:600}
 
-    /* ── Header ── */
-    .header {
-      padding: 14px 16px; display: flex; align-items: center; gap: 10px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255,255,255,0.02);
-      position: sticky; top: 0; z-index: 10;
-    }
-    .logo { font-weight: 800; font-size: 14px;
-      background: linear-gradient(135deg, var(--primary), var(--cyan));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .header-url { font-size: 10px; color: var(--text-3); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .settings-btn { background: none; border: none; cursor: pointer; color: var(--text-3); font-size: 14px; padding: 4px; border-radius: 6px; }
-    .settings-btn:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+/* ── Pills ── */
+.pills{padding:0 12px 12px;display:flex;flex-wrap:wrap;gap:5px}
+.pill{padding:3px 8px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#ffaaaa;background:rgba(255,85,85,.12);border:1px solid rgba(255,85,85,.3)}
 
-    /* ── Risk banner ── */
-    .risk-banner {
-      padding: 16px; display: flex; align-items: center; gap: 14px;
-      border-bottom: 1px solid var(--border);
-    }
-    .risk-icon { font-size: 2rem; flex-shrink: 0; }
-    .risk-title { font-weight: 700; font-size: 14px; }
-    .risk-sub   { font-size: 11px; color: var(--text-2); margin-top: 3px; }
-    .risk-banner.high     { background: rgba(239,68,68,0.07);   border-left: 3px solid var(--violation); }
-    .risk-banner.medium   { background: rgba(249,115,22,0.07);  border-left: 3px solid var(--high); }
-    .risk-banner.safe     { background: rgba(16,185,129,0.07);  border-left: 3px solid var(--compliant); }
-    .risk-banner.scanning { background: rgba(99,102,241,0.07); border-left: 3px solid var(--primary); }
-    .risk-banner.neutral  { background: rgba(255,255,255,0.02); border-left: 3px solid var(--border-1); }
+/* ── Divider ── */
+.sep{border:none;border-top:1px solid var(--bdr);margin:0}
 
-    /* ── Indicator pills ── */
-    .indicators { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 6px; }
-    .indicator-pill {
-      padding: 3px 9px; border-radius: 6px; font-size: 10px; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.05em;
-      background: rgba(239,68,68,0.1); color: #FCA5A5;
-      border: 1px solid rgba(239,68,68,0.25);
-    }
+/* ── Lang ── */
+.lang-row{padding:10px 12px;display:flex;align-items:center;gap:10px;background:var(--bg1);border-bottom:1px solid var(--bdr)}
+.lang-lbl{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:var(--txt3);flex-shrink:0}
+.lang-sel{
+  flex:1;background:var(--bg2);border:1px solid var(--bdr1);
+  color:#fff;font-family:inherit;font-size:11px;font-weight:700;
+  padding:7px 10px;cursor:pointer;outline:none;
+}
+.lang-sel:focus{border-color:var(--acc)}
+.lang-sel option{background:#220030;color:#fff}
 
-    /* ── Actions ── */
-    .actions { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid var(--border); }
-    .btn {
-      width: 100%; padding: 10px 16px; border-radius: 8px;
-      font-family: inherit; font-size: 12px; font-weight: 600;
-      cursor: pointer; border: none; display: flex; align-items: center;
-      justify-content: center; gap: 7px; transition: all 0.2s;
-    }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), #4F46E5);
-      color: #fff; box-shadow: 0 3px 12px rgba(99,102,241,0.3);
-    }
-    .btn-primary:hover { box-shadow: 0 5px 18px rgba(99,102,241,0.45); transform: translateY(-1px); }
-    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .btn-ghost {
-      background: rgba(255,255,255,0.04); color: var(--text-2);
-      border: 1px solid var(--border-1);
-    }
-    .btn-ghost:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+/* ── Buttons ── */
+.actions{padding:10px 12px;display:flex;flex-direction:column;gap:7px}
+.btn{
+  width:100%;padding:11px 14px;font-family:inherit;
+  font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;
+  cursor:pointer;border:none;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .1s;
+}
+.btn-p{background:var(--acc);color:var(--bg);border:2px solid var(--acc);box-shadow:3px 3px 0 rgba(232,148,255,.25)}
+.btn-p:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 rgba(232,148,255,.25)}
+.btn-p:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-g{background:transparent;color:var(--txt2);border:2px solid var(--bdr1)}
+.btn-g:hover{border-color:var(--acc);color:var(--acc)}
 
-    /* ── Language selector ── */
-    .lang-row { padding: 10px 16px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
-    .lang-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); flex-shrink: 0; }
-    .lang-select {
-      flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border-1);
-      color: var(--text); border-radius: 7px; font-family: inherit; font-size: 11px;
-      padding: 6px 10px; appearance: none; cursor: pointer; outline: none;
-    }
-    .lang-select:focus { border-color: var(--primary); }
-    .lang-select option { background-color: var(--bg); color: var(--text); }
+/* ── Loading ── */
+.loading{padding:36px 20px;text-align:center}
+.spinner{width:34px;height:34px;margin:0 auto 16px;border:2px solid var(--bdr);border-top-color:var(--acc);animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-title{font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--acc);margin-bottom:6px}
+.load-stage{font-size:10px;color:var(--txt2);font-weight:600;margin-bottom:14px}
+.load-steps{display:flex;flex-direction:column;gap:5px;max-width:260px;margin:0 auto}
+.load-step{padding:7px 10px;border:1px solid var(--bdr);font-size:10px;color:var(--txt2);font-weight:600;text-align:left;background:var(--bg1)}
 
-    /* ── Loading ── */
-    .loading { padding: 24px 16px; text-align: center; }
-    .spinner {
-      width: 28px; height: 28px; border-radius: 50%;
-      border: 2px solid var(--border-1);
-      border-top-color: var(--primary);
-      animation: spin 0.7s linear infinite; margin: 0 auto 12px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-stage { font-size: 11px; color: var(--text-2); margin-top: 6px; }
+/* ── Results ── */
+.score-row{
+  padding:14px 12px;display:flex;align-items:center;gap:14px;
+  border-bottom:2px solid var(--bdr1);background:var(--bg1);
+}
+.score-circle{
+  width:58px;height:58px;flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:2px solid currentColor;
+}
+.score-num{font-size:22px;font-weight:900;line-height:1}
+.score-lbl{font-size:7px;font-weight:800;opacity:.8;letter-spacing:.05em;text-transform:uppercase;margin-top:2px}
+.sign-col{display:flex;flex-direction:column;gap:6px;flex:1}
+.sign-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;font-size:10px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.06em;width:fit-content;
+}
+.s-ok {background:rgba(66,255,161,.12);color:#42ffa1;border:1px solid rgba(66,255,161,.3)}
+.s-bad{background:rgba(255,85,85,.12); color:#ff8080;border:1px solid rgba(255,85,85,.3)}
+.power-txt{font-size:9px;color:var(--txt3);font-weight:700}
 
-    /* ── Results ── */
-    .results { padding: 12px 16px; }
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:2px solid var(--bdr1)}
+.stat-cell{padding:10px 6px;text-align:center;border-right:1px solid var(--bdr)}
+.stat-cell:last-child{border-right:none}
+.stat-num{font-size:22px;font-weight:900;line-height:1}
+.stat-lbl{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-top:3px}
 
-    /* Score row */
-    .score-row {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px; border-radius: 10px; margin-bottom: 12px;
-      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-    }
-    .score-circle {
-      width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 17px; line-height: 1;
-      border: 2px solid currentColor;
-    }
-    .score-circle-lbl { font-size: 8px; font-weight: 600; opacity: 0.7; margin-top: 2px; }
-    .sign-row { display: flex; flex-direction: column; gap: 5px; }
-    .sign-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 3px 9px; border-radius: 6px; font-size: 10px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.05em;
-    }
-    .sign-ok  { background: rgba(16,185,129,0.15); color: #6EE7B7; border: 1px solid rgba(16,185,129,0.3); }
-    .sign-bad { background: rgba(239,68,68,0.15);  color: #FCA5A5; border: 1px solid rgba(239,68,68,0.3); }
-    .power-line { font-size: 10px; color: var(--text-3); }
-    .summary-text { font-size: 11px; color: var(--text-2); line-height: 1.6; margin-bottom: 12px; }
+.summary{padding:10px 12px;border-bottom:1px solid var(--bdr);font-size:11px;color:var(--txt2);line-height:1.65;font-weight:500}
 
-    /* Stats mini */
-    .stats-mini { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 12px; }
-    .stat-mini { padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); text-align: center; }
-    .stat-mini-num { font-size: 1.1rem; font-weight: 800; line-height: 1; }
-    .stat-mini-lbl { font-size: 9px; color: var(--text-3); margin-top: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+.clauses-hdr{
+  padding:8px 12px;border-bottom:1px solid var(--bdr);
+  font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:var(--txt3);
+  background:var(--bg1);
+}
+.clause{border-bottom:1px solid var(--bdr);cursor:pointer;transition:background .1s}
+.clause:hover{background:var(--bg1)}
+.clause-top{padding:10px 12px;display:flex;align-items:center;gap:7px}
+.rdot{width:8px;height:8px;flex-shrink:0}
+.rbadge{padding:2px 7px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.bv{background:rgba(255,85,85,.15); color:#ff9090}
+.bh{background:rgba(255,140,66,.15);color:#ffb090}
+.bm{background:rgba(255,197,66,.15);color:#ffe090}
+.bl{background:rgba(66,180,255,.15);color:#90d0ff}
+.bc{background:rgba(66,255,161,.15);color:#90ffcf}
+.ctype{font-size:9px;color:var(--txt3);font-weight:700;text-transform:uppercase;margin-left:auto;letter-spacing:.04em}
+.clause-body{display:none;padding:8px 12px 12px;border-top:1px solid var(--bdr);font-size:10px;color:var(--txt2);line-height:1.6}
+.clause.open .clause-body{display:block}
+.why{margin-bottom:6px;color:#d4b8e0}
+.dpill{display:inline-flex;align-items:center;gap:3px;padding:2px 6px;background:rgba(236,72,153,.12);border:1px solid rgba(236,72,153,.3);color:#f9a8d4;font-size:8px;font-weight:800;text-transform:uppercase;margin-bottom:5px}
+.fair-box{margin-top:6px;padding:7px 9px;background:rgba(66,255,161,.06);border-left:2px solid var(--green);font-size:10px;color:#90ffcf;line-height:1.5}
+.neg-box {margin-top:5px;padding:7px 9px;background:rgba(66,180,255,.06);border-left:2px solid var(--blue);font-size:10px;color:#90d0ff;line-height:1.5}
 
-    /* Clause list */
-    .clauses-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-3); margin-bottom: 8px; }
-    .clause-item {
-      padding: 10px 12px; border-radius: 8px; margin-bottom: 6px;
-      background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-      cursor: pointer; transition: border-color 0.2s;
-    }
-    .clause-item:hover { border-color: var(--border-1); }
-    .clause-top { display: flex; align-items: center; gap: 7px; }
-    .clause-type { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-3); margin-left: auto; }
-    .clause-detail { display: none; margin-top: 8px; font-size: 10px; color: var(--text-2); line-height: 1.55; border-top: 1px solid var(--border); padding-top: 8px; }
-    .clause-item.open .clause-detail { display: block; }
-    .dark-pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 5px; background: rgba(236,72,153,0.12); border: 1px solid rgba(236,72,153,0.25); color: #F9A8D4; font-size: 9px; font-weight: 600; margin-top: 5px; }
-    .fair-box { margin-top: 6px; padding: 7px; border-radius: 6px; background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); font-size: 10px; color: #6EE7B7; line-height: 1.5; }
-    .neg-box  { margin-top: 5px; padding: 7px; border-radius: 6px; background: rgba(34,211,238,0.06); border: 1px solid rgba(34,211,238,0.2); font-size: 10px; color: #67E8F9; line-height: 1.5; }
+.more-note{padding:8px 12px;font-size:9px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.06em;text-align:center;border-bottom:1px solid var(--bdr)}
 
-    .risk-badge {
-      padding: 2px 8px; border-radius: 5px; font-size: 9px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.05em;
-    }
-    .badge-violation { background: rgba(239,68,68,0.15);  color: #FCA5A5; }
-    .badge-high      { background: rgba(249,115,22,0.15); color: #FDBA74; }
-    .badge-medium    { background: rgba(234,179,8,0.15);  color: #FDE047; }
-    .badge-low       { background: rgba(34,197,94,0.15);  color: #86EFAC; }
-    .badge-compliant { background: rgba(16,185,129,0.15); color: #6EE7B7; }
+.foot{padding:10px 12px;display:flex;gap:7px;border-top:2px solid var(--bdr1);background:var(--bg1);position:sticky;bottom:0}
+.foot .btn{padding:9px 12px;font-size:10px}
 
-    /* Open in app link */
-    .open-link { padding: 10px 16px; border-top: 1px solid var(--border); }
-    .open-link a { font-size: 10px; color: var(--text-3); text-decoration: none; display: flex; align-items: center; gap: 5px; }
-    .open-link a:hover { color: var(--primary); }
-
-    /* Error */
-    .error-box { padding: 12px 16px; }
-    .error-msg { padding: 10px 12px; border-radius: 8px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #FCA5A5; font-size: 11px; }
-
-    /* Not legal page */
-    .not-legal { padding: 28px 16px; text-align: center; color: var(--text-2); }
-    .not-legal .icon { font-size: 2rem; margin-bottom: 10px; }
-    .not-legal p { font-size: 11px; line-height: 1.6; }
-  </style>
+.err-box{margin:12px;padding:12px;background:rgba(255,85,85,.08);border:2px solid rgba(255,85,85,.35);color:#ffaaaa;font-size:11px;line-height:1.5;font-weight:600}
+</style>
 </head>
 <body>
 
-<!-- ── Header ── -->
-<div class="header">
-  <span class="logo">⚖️ LexGuard</span>
-  <span class="header-url" id="page-url">—</span>
-  <button class="settings-btn" id="settings-btn" title="Settings">⚙️</button>
+<div class="hdr">
+  <div class="logo">⚖ LexGuard <em>AI</em></div>
+  <span class="hdr-url" id="page-url">—</span>
+  <button class="hdr-btn" onclick="openSettings()" title="Settings">⚙</button>
 </div>
 
-<!-- Content injected by JS -->
 <div id="root"></div>
 
-<script src="sidebar.js"></script>
+<script>
+const API='http://localhost:8000';
+let tabId=null;
+
+const RC={violation:'#ff5555',high:'#ff8c42',medium:'#ffc542',low:'#42b4ff',compliant:'#42ffa1'};
+
+async function boot(){
+  const[tab]=await chrome.tabs.query({active:true,currentWindow:true});
+  if(!tab){showNotLegal('Could not read tab info.');return;}
+  tabId=tab.id;
+  try{document.getElementById('page-url').textContent=new URL(tab.url).hostname;}catch{}
+  chrome.runtime.sendMessage({type:'GET_PRESCAN_RESULT',tabId:tab.id},r=>{
+    r?renderPrescan(r):showNotLegal('No legal content detected on this page.\nNavigate to a contract, ToS, or agreement page.');
+  });
+}
+
+function renderPrescan(r){
+  const lv=r.level||'neutral';
+  const ico={high:'🔴',medium:'🟠',safe:'🟢',neutral:'📄'};
+  const titles={high:'High Risk Detected',medium:'Caution Advised',safe:'Looks Safe',neutral:'Page Scanned'};
+  const subs={
+    high:`${r.risk_indicators?.length||0} risk pattern(s) found. Deep analysis recommended.`,
+    medium:'Some concerning patterns detected.',
+    safe:'No major red flags in quick scan.',
+    neutral:'Legal content found on this page.',
+  };
+  let h=`<div class="risk-banner ${lv}">
+    <div class="risk-icon">${ico[lv]||'📄'}</div>
+    <div><div class="risk-title">${titles[lv]||'Scanned'}</div><div class="risk-sub">${subs[lv]||''}</div></div>
+  </div>`;
+  if(r.risk_indicators?.length)
+    h+=`<div class="pills">${r.risk_indicators.map(i=>`<span class="pill">${esc(i)}</span>`).join('')}</div>`;
+  h+=`<hr class="sep">
+  <div class="lang-row">
+    <span class="lang-lbl">Language</span>
+    <select class="lang-sel" id="lang-sel">
+      <option value="en">English</option>
+      <option value="hi">हिन्दी</option>
+      <option value="kn">ಕನ್ನಡ</option>
+      <option value="ta">தமிழ்</option>
+      <option value="te">తెలుగు</option>
+      <option value="ml">മലയാളം</option>
+      <option value="bn">বাংলা</option>
+      <option value="mr">मराठी</option>
+      <option value="gu">ગુજરાતી</option>
+      <option value="pa">ਪੰਜਾਬੀ</option>
+    </select>
+  </div>
+  <div class="actions">
+    <button class="btn btn-p" id="abtn" onclick="runAnalysis()">🔍 Deep Analysis — Clause by Clause</button>
+    <button class="btn btn-g" onclick="openInApp()">🌐 Open Full Dashboard</button>
+  </div>`;
+  document.getElementById('root').innerHTML=h;
+}
+
+async function runAnalysis(){
+  const lang=document.getElementById('lang-sel')?.value||'en';
+  const btn=document.getElementById('abtn');
+  if(btn)btn.disabled=true;
+  showLoading('Extracting page text…');
+  let text='';
+  try{
+    const[res]=await chrome.scripting.executeScript({
+      target:{tabId},
+      func:()=>window.__lexguardExtractText?window.__lexguardExtractText(40000):document.body.innerText.slice(0,40000),
+    });
+    text=res?.result||'';
+  }catch(e){showError('Could not read page: '+e.message);return;}
+  if(!text||text.length<100){showError('Not enough text on this page to analyse.');return;}
+  showLoading('Running 3-stage adversarial pipeline…');
+  chrome.runtime.sendMessage({type:'ANALYSE_REQUEST',text,language:lang},res=>{
+    if(!res||!res.ok){showError((res?.error)||'Analysis failed. Is the server running?');return;}
+    renderResults(res.data?.analysis||res.data);
+  });
+}
+
+function renderResults(a){
+  const score=a.overall_risk_score||0;
+  const sc=RC[score>=70?'violation':score>=40?'high':'compliant'];
+  const clauses=(a.flagged_clauses||[]).sort((x,y)=>{
+    const o={violation:0,high:1,medium:2,low:3,compliant:4};
+    return(o[x.risk_level]??5)-(o[y.risk_level]??5);
+  });
+  const sign=a.safe_to_sign
+    ?`<span class="sign-badge s-ok">✅ Safe to Sign</span>`
+    :`<span class="sign-badge s-bad">🚫 Do Not Sign</span>`;
+
+  const rows=clauses.slice(0,12).map((c,i)=>{
+    const lv=c.risk_level||'low';
+    const col=RC[lv]||'#fff';
+    const bc={violation:'bv',high:'bh',medium:'bm',low:'bl',compliant:'bc'}[lv]||'bl';
+    const dp=c.dark_pattern?`<div class="dpill">🎭 ${esc((c.dark_pattern_type||'dark pattern').replace(/_/g,' '))}</div>`:'';
+    const fair=c.fair_version?`<div class="fair-box">✍️ <b>Fair:</b> ${esc(c.fair_version.slice(0,180))}</div>`:'';
+    const neg=c.negotiation_tip?`<div class="neg-box">🤝 ${esc(c.negotiation_tip.slice(0,180))}</div>`:'';
+    const why=c.why_flagged?`<div class="why">${esc(c.why_flagged.slice(0,220))}</div>`:'';
+    return`<div class="clause" id="ci${i}" onclick="tc(${i})">
+      <div class="clause-top">
+        <div class="rdot" style="background:${col}"></div>
+        <span class="rbadge ${bc}">${lv}</span>
+        <span class="ctype">${esc((c.clause_type||'other').replace(/_/g,' '))}</span>
+      </div>
+      <div class="clause-body">${why}${dp}${fair}${neg}</div>
+    </div>`;
+  }).join('');
+
+  const more=clauses.length>12?clauses.length-12:0;
+  document.getElementById('root').innerHTML=`
+  <div class="score-row">
+    <div class="score-circle" style="color:${sc}">
+      <span class="score-num">${score}</span>
+      <span class="score-lbl">Risk</span>
+    </div>
+    <div class="sign-col">
+      ${sign}
+      <span class="power-txt">⚖️ ${esc(a.power_imbalance||'—')}</span>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-cell"><div class="stat-num" style="color:#ff5555">${a.red_flags_count??0}</div><div class="stat-lbl">Red Flags</div></div>
+    <div class="stat-cell"><div class="stat-num" style="color:#EC4899">${a.dark_patterns_count??0}</div><div class="stat-lbl">Dark Patterns</div></div>
+    <div class="stat-cell"><div class="stat-num" style="color:#e894ff">${clauses.length}</div><div class="stat-lbl">Clauses</div></div>
+  </div>
+  ${a.summary?`<div class="summary">${esc(a.summary)}</div>`:''}
+  <div class="clauses-hdr">Flagged Clauses ${more?`(12 of ${clauses.length})`:`(${clauses.length})`}</div>
+  ${rows}
+  ${more?`<div class="more-note">+${more} more — open dashboard for all</div>`:''}
+  <div class="foot">
+    <button class="btn btn-g" style="flex:1" onclick="boot()">← Back</button>
+    <button class="btn btn-g" style="flex:2" onclick="openConsumer()">Consumer Dashboard ↗</button>
+  </div>`;
+}
+
+function tc(i){document.getElementById('ci'+i).classList.toggle('open')}
+
+function showLoading(stage){
+  document.getElementById('root').innerHTML=`
+  <div class="loading">
+    <div class="spinner"></div>
+    <div class="load-title">Analysing…</div>
+    <div class="load-stage">${esc(stage)}</div>
+    <div class="load-steps">
+      <div class="load-step">🔎 Stage 1 — Parsing &amp; classifying clauses</div>
+      <div class="load-step">⚔️ Stage 2 — Adversarial risk scan</div>
+      <div class="load-step">⚡ Stage 3 — Consequence simulation &amp; scoring</div>
+    </div>
+  </div>`;
+}
+
+function showNotLegal(msg){
+  document.getElementById('root').innerHTML=`
+  <div class="no-legal">
+    <span class="no-legal-icon">📄</span>
+    <div class="no-legal-title">No Contract Detected</div>
+    <div class="no-legal-sub">${esc(msg)}</div>
+    <div class="actions" style="margin-top:4px">
+      <button class="btn btn-p" onclick="openConsumer()">👤 Consumer — Upload File ↗</button>
+      <button class="btn btn-g" onclick="openEnterprise()">🏢 Enterprise Pipeline ↗</button>
+    </div>
+  </div>`;
+}
+
+function showError(msg){
+  document.getElementById('root').innerHTML=`
+  <div class="err-box">⚠️ ${esc(msg)}</div>
+  <div class="actions"><button class="btn btn-g" onclick="boot()">← Try Again</button></div>`;
+}
+
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function openConsumer()  { chrome.tabs.create({url:'http://localhost:3000/consumer'}) }
+function openEnterprise(){ chrome.tabs.create({url:'http://localhost:3000/enterprise'}) }
+function openSettings()  { chrome.tabs.create({url:'http://localhost:3000'}) }
+
+boot();
+</script>
 </body>
 </html>
