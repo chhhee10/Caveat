@@ -28,19 +28,20 @@
 
 .theme-light {
   --bg:          #ffffff;
-  --bg-card:     #f8f8fa;
-  --bg-card2:    #f0f0f4;
-  --accent:      #111111;
-  --accent-dim:  #333333;
-  --accent-dark: #000000;
-  --accent-muted: rgba(0, 0, 0, 0.06);
-  --border:      rgba(0, 0, 0, 0.1);
-  --border-bright: rgba(0, 0, 0, 0.2);
-  --text-body:   rgba(0, 0, 0, 0.75);
-  --text-muted:  rgba(0, 0, 0, 0.45);
+  --bg-card:     #ffffff;
+  --bg-card2:    #fafafa;
+  --accent:      #b82aff; /* Vibrant purple for borders, buttons, icons */
+  --accent-dim:  #941ecf;
+  --accent-dark: #6e159c;
+  --accent-muted: rgba(184, 42, 255, 0.1);
+  --border:      rgba(184, 42, 255, 0.3);
+  --border-bright: rgba(184, 42, 255, 0.6);
+  --text-header: #111111; /* Brutalist black for headers */
+  --text-body:   #333333; /* Dark gray for readability */
+  --text-muted:  #777777;
   
   background: var(--bg);
-  color: var(--accent);
+  color: var(--text-body);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

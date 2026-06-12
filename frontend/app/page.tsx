@@ -107,40 +107,58 @@ export default function Home() {
           THREE SURFACES
       ══════════════════════════════════════════ */}
       <section style={{ padding: "120px 36px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ marginBottom: "72px" }}>
-            <p className="section-label" style={{ marginBottom: "14px" }}>THREE DELIVERY SURFACES</p>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
+          <div style={{ marginBottom: "80px" }}>
+            <p style={{ fontSize: "14px", fontWeight: "bold", letterSpacing: "0.15em", color: "var(--accent)", marginBottom: "16px", textTransform: "uppercase" }}>THREE DELIVERY SURFACES</p>
             <h2
               className="font-display"
               style={{
-                fontSize: "clamp(60px, 9vw, 120px)",
+                fontSize: "clamp(80px, 14vw, 180px)",
                 color: "var(--accent)",
-                lineHeight: 0.88,
+                lineHeight: 0.82,
                 letterSpacing: "-0.02em",
+                transform: "scaleX(0.8)",
+                transformOrigin: "left",
               }}
             >
               ONE<br />
-              <span style={{ color: "rgba(232,148,255,0.35)" }}>INTELLIGENCE</span>
+              <span style={{ color: "var(--text-muted)", WebkitTextStroke: "1px var(--text-muted)" }}>INTELLIGENCE.</span>
             </h2>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px" }}>
             {[
               { icon: Building2, label: "Enterprise", title: "Pipeline", desc: "7-agent LangGraph orchestration. Risk classification, redlining, GitHub PR, Slack alerts — all under 45 seconds.", href: "/enterprise", cta: "Open Dashboard" },
               { icon: User, label: "Consumer", title: "Clarity", desc: "Photograph a physical document. Plain-language breakdown in Hindi, Kannada, Tamil, Telugu or 5 more languages.", href: "/consumer", cta: "Try It Free" },
               { icon: Puzzle, label: "Browser", title: "Extension", desc: "MutationObserver detects every ToS wall. Icon glows amber → red. Sidebar analysis without leaving the page.", href: "#extension", cta: "Learn More" },
             ].map((card, i) => (
-              <div key={i} className="card" style={{ padding: "36px", display: "flex", flexDirection: "column", gap: "20px" }}>
-                <div style={{ width: "48px", height: "48px", borderRadius: "14px", background: "var(--accent-muted)", border: "1px solid var(--border-bright)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <card.icon size={22} color="var(--accent)" />
+              <div key={i} style={{ 
+                padding: "48px 40px", 
+                display: "flex", 
+                flexDirection: "column", 
+                gap: "24px",
+                background: "var(--bg-card)",
+                border: "3px solid var(--accent)",
+                borderBottom: "10px solid var(--accent)", // Brutalist heavy bottom border
+                borderRight: "6px solid var(--accent)",
+              }}>
+                <div style={{ width: "64px", height: "64px", background: "var(--accent)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <card.icon size={28} color="var(--bg)" strokeWidth={2.5} />
                 </div>
                 <div>
-                  <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", color: "var(--text-muted)", marginBottom: "4px" }}>{card.label}</p>
-                  <h3 className="font-display" style={{ fontSize: "clamp(36px, 4vw, 54px)", color: "var(--accent)", lineHeight: 0.9 }}>{card.title}</h3>
+                  <p style={{ fontSize: "12px", fontWeight: 800, letterSpacing: "0.15em", color: "var(--text-muted)", marginBottom: "8px", textTransform: "uppercase" }}>{card.label}</p>
+                  <h3 className="font-display" style={{ fontSize: "clamp(48px, 5vw, 64px)", color: "var(--accent)", lineHeight: 0.9 }}>{card.title}</h3>
                 </div>
-                <p style={{ fontSize: "14px", lineHeight: "1.65", color: "var(--text-body)", flex: 1 }}>{card.desc}</p>
-                <Link href={card.href}>
-                  <button className="btn-ghost" style={{ fontSize: "13px", padding: "10px 20px" }}>{card.cta} <ArrowRight size={13} /></button>
+                <p style={{ fontSize: "16px", lineHeight: "1.6", color: "var(--text-body)", flex: 1, fontWeight: 500 }}>{card.desc}</p>
+                <Link href={card.href} style={{ alignSelf: "flex-start" }}>
+                  <button style={{ 
+                    fontSize: "14px", fontWeight: 800, padding: "16px 28px", 
+                    background: "var(--bg)", color: "var(--accent)", 
+                    border: "3px solid var(--accent)", display: "inline-flex", alignItems: "center", gap: "10px",
+                    cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.05em",
+                  }}>
+                    {card.cta} <ArrowRight size={16} strokeWidth={3} />
+                  </button>
                 </Link>
               </div>
             ))}
@@ -151,42 +169,54 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           7 AGENTS
       ══════════════════════════════════════════ */}
-      <section style={{ padding: "120px 36px", borderTop: "1px solid var(--border)" }}>
+      <section style={{ padding: "120px 36px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "center" }}>
           <div>
-            <p className="section-label" style={{ marginBottom: "14px" }}>LANGGRAPH ORCHESTRATION</p>
-            <h2 className="font-display" style={{ fontSize: "clamp(64px, 8vw, 110px)", lineHeight: 0.88, letterSpacing: "-0.02em", color: "var(--accent)", marginBottom: "28px" }}>
-              7<br /><span style={{ color: "rgba(232,148,255,0.35)" }}>AGENTS.</span><br />1<br /><span style={{ color: "rgba(232,148,255,0.35)" }}>PIPELINE.</span>
+            <p style={{ fontSize: "14px", fontWeight: "bold", letterSpacing: "0.15em", color: "var(--accent)", marginBottom: "16px", textTransform: "uppercase" }}>LANGGRAPH ORCHESTRATION</p>
+            <h2 className="font-display" style={{ 
+              fontSize: "clamp(80px, 11vw, 150px)", 
+              lineHeight: 0.85, 
+              letterSpacing: "-0.02em", 
+              color: "var(--text-header)", 
+              marginBottom: "32px",
+              transform: "scaleX(0.8)",
+              transformOrigin: "left",
+            }}>
+              7<br />
+              <span style={{ color: "transparent", WebkitTextStroke: "3px var(--accent)" }}>AGENTS.</span><br />
+              1<br />
+              <span style={{ color: "transparent", WebkitTextStroke: "3px var(--accent)" }}>PIPELINE.</span>
             </h2>
-            <p style={{ fontSize: "15px", lineHeight: "1.7", color: "var(--text-body)", maxWidth: "380px" }}>
+            <p style={{ fontSize: "16px", lineHeight: "1.7", color: "var(--text-body)", maxWidth: "380px", fontWeight: 500 }}>
               Parallel fan-out for extraction, regulation loading, and memory scanning. Risk report in under 45 seconds.
             </p>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             {AGENTS.map((agent, i) => (
               <div key={agent.id} onClick={() => setActiveAgent(i)} style={{
-                display: "flex", alignItems: "center", gap: "14px", padding: "14px 18px",
-                borderRadius: "14px", cursor: "pointer", transition: "all 0.35s ease",
-                background: activeAgent === i ? "var(--accent-muted)" : "transparent",
-                border: `1px solid ${activeAgent === i ? "var(--border-bright)" : "transparent"}`,
-                transform: activeAgent === i ? "translateX(8px)" : "translateX(0)",
+                display: "flex", alignItems: "center", gap: "20px", padding: "20px 24px",
+                cursor: "pointer", transition: "all 0.2s ease",
+                background: "var(--bg-card)",
+                border: activeAgent === i ? "3px solid var(--accent)" : "2px solid var(--border)",
+                boxShadow: activeAgent === i ? "8px 8px 0 var(--accent)" : "none",
+                transform: activeAgent === i ? "translate(-4px, -4px)" : "translate(0, 0)",
               }}>
                 <div style={{
-                  width: "38px", height: "38px", borderRadius: "10px",
+                  width: "44px", height: "44px",
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "12px", fontWeight: 800, flexShrink: 0,
-                  background: activeAgent === i ? "var(--accent)" : "rgba(232,148,255,0.07)",
-                  color: activeAgent === i ? "var(--bg)" : "var(--text-muted)",
-                  transition: "all 0.35s",
+                  fontSize: "14px", fontWeight: 900, flexShrink: 0,
+                  background: activeAgent === i ? "var(--accent)" : "var(--accent-muted)",
+                  color: activeAgent === i ? "var(--bg)" : "var(--accent)",
+                  border: activeAgent === i ? "none" : "2px solid var(--accent)",
+                  transition: "all 0.2s",
                 }}>
                   {agent.id}
                 </div>
                 <div style={{ flex: 1 }}>
-                  <p style={{ fontSize: "14px", fontWeight: 600, color: activeAgent === i ? "var(--accent)" : "var(--text-body)" }}>{agent.name}</p>
-                  <p style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "2px" }}>{agent.desc}</p>
+                  <p style={{ fontSize: "16px", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em", color: activeAgent === i ? "var(--accent)" : "var(--text-body)" }}>{agent.name}</p>
+                  <p style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "4px", fontWeight: 500 }}>{agent.desc}</p>
                 </div>
-                {activeAgent === i && <div style={{ width: "7px", height: "7px", borderRadius: "50%", background: "var(--accent)" }} />}
               </div>
             ))}
           </div>
@@ -196,13 +226,13 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           MEMORY
       ══════════════════════════════════════════ */}
-      <section style={{ padding: "120px 36px", borderTop: "1px solid var(--border)" }}>
+      <section style={{ padding: "120px 36px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div className="card" style={{ padding: "72px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "center" }}>
             <div>
-              <p className="section-label" style={{ marginBottom: "14px" }}>CHROMADB VECTOR MEMORY</p>
-              <h2 className="font-display" style={{ fontSize: "clamp(52px, 6vw, 88px)", lineHeight: 0.88, color: "var(--accent)", marginBottom: "28px", letterSpacing: "-0.02em" }}>
-                MEMORY<br />THAT<br /><span style={{ color: "rgba(232,148,255,0.35)" }}>NEVER</span><br /><span style={{ color: "rgba(232,148,255,0.35)" }}>FORGETS</span>
+              <p className="section-label" style={{ marginBottom: "14px", color: "var(--accent)" }}>CHROMADB VECTOR MEMORY</p>
+              <h2 className="font-display" style={{ fontSize: "clamp(52px, 6vw, 88px)", lineHeight: 0.88, color: "var(--text-header)", marginBottom: "28px", letterSpacing: "-0.02em" }}>
+                MEMORY<br />THAT<br /><span style={{ color: "var(--text-muted)", WebkitTextStroke: "1px var(--text-muted)" }}>NEVER</span><br /><span style={{ color: "var(--text-muted)", WebkitTextStroke: "1px var(--text-muted)" }}>FORGETS</span>
               </h2>
               <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
                 {[
@@ -246,10 +276,10 @@ export default function Home() {
       {/* ══════════════════════════════════════════
           MULTILINGUAL
       ══════════════════════════════════════════ */}
-      <section style={{ padding: "120px 36px", borderTop: "1px solid var(--border)", textAlign: "center" }}>
+      <section style={{ padding: "120px 36px", textAlign: "center" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <p className="section-label" style={{ marginBottom: "14px" }}>INDICTRANS2 + TESSERACT OCR</p>
-          <h2 className="font-display" style={{ fontSize: "clamp(72px, 13vw, 180px)", lineHeight: 0.88, letterSpacing: "-0.02em", marginBottom: "44px" }}>
+          <p className="section-label" style={{ marginBottom: "14px", color: "var(--accent)" }}>MULTILINGUAL BY DESIGN</p>
+          <h2 className="font-display" style={{ fontSize: "clamp(48px, 6vw, 80px)", lineHeight: 0.88, color: "var(--text-header)", marginBottom: "40px", letterSpacing: "-0.02em" }}>
             BUILT FOR<br /><span style={{ color: "rgba(232,148,255,0.45)" }}>BHARAT</span>
           </h2>
           <p style={{ fontSize: "17px", color: "var(--text-body)", marginBottom: "44px", maxWidth: "560px", margin: "0 auto 44px", lineHeight: "1.65" }}>
