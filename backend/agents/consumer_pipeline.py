@@ -54,7 +54,7 @@ You will receive a JSON array of analysed legal clauses.
 Your job:
 1. For each HIGH or MEDIUM risk clause: simulate real-world consequences and financial impact.
 2. Rewrite every clause explanation at an 8th-grade reading level (plain_english).
-3. Translate the key fields into the user's preferred language: {language}
+3. Write all explanations, summaries, and consequence simulations in extremely simple, 8th-grade English. Speak as if explaining it to a rural farmer or someone with no legal background. Do NOT use formal legal jargon.
 4. Calculate a single overall_risk_score from 0-100 (100 = maximally exploitative).
 5. Determine safe_to_sign (true if overall_risk_score < 40).
 6. Estimate the power imbalance (e.g. "Company: 85% / You: 15%").
@@ -67,7 +67,6 @@ Return ONLY valid JSON matching this EXACT structure (no markdown, no wrapping t
   "safe_to_sign": true | false,
   "power_imbalance": "Company: X% / You: Y%",
   "summary": "2-sentence plain English summary of the document",
-  "translated_summary": "same summary in {language}",
   "flagged_clauses": [
     {{
       "clause_text": "...",
@@ -82,9 +81,6 @@ Return ONLY valid JSON matching this EXACT structure (no markdown, no wrapping t
       "dark_pattern": true | false,
       "dark_pattern_type": "...",
       "plain_english": "8th-grade rewrite of this clause",
-      "translated_explanation": "why_flagged translated into {language}",
-      "translated_consequence": "consequence translated into {language}",
-      "translated_fair_version": "fair_version translated into {language}",
       "negotiation_tip": "Exact actionable advice: what to ask for, how to phrase it"
     }}
   ],
